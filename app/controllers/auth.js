@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
 const router = express.Router();
-const Article = mongoose.model('Article');
 import User from '../models/User';
 
 module.exports = (app) => {
