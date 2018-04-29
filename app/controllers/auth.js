@@ -22,11 +22,11 @@ router.post('/login', passport.authenticate('local-login', {
 
 router.post('/register', passport.authenticate('local-register', {
   failWithError: true
-}, (req, res, next) => {
+}), (req, res, next) => {
   return res.json({id: req.user._id});
 }, (error, req, res, next) =>{
   return res.json(500, error);
-}));
+});
 
 passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser((id, done) => {
@@ -41,7 +41,7 @@ passport.use('local-register', new LocalStrategy({
   User.findOne({email:email}, function(err, user) {
     if (err) return done(err);
     if (user) {
-      return done(null, false);
+      return done(null, false, {message: 'User already exist.'});
     } else {
       var newUser = new User({
         firstName: req.body.fname,
@@ -51,7 +51,7 @@ passport.use('local-register', new LocalStrategy({
       });
       User.createUser(newUser, function (err, user) {
         if (err) {
-          return done(null, false);
+          return done(null, false, {message: 'Error creating user'});
         } else {
           return done(null, user);
         }
