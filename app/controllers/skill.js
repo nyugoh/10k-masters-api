@@ -29,12 +29,12 @@ router.get('/get', (req, res) =>{
   });
 });
 
-router.post('/remove', (req, res) =>{
-  Skill.findByIdAndRemove(req.body.id).then(status=>{
+router.delete('/remove/:id', (req, res) =>{
+  Skill.findByIdAndRemove(req.params.id).then(status=>{
     if (status)
-      res.json({status: 'OK'});
+      res.json({ status: 'OK', id: req.params.id });
   }).catch(error=>{
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   });
 });
 
