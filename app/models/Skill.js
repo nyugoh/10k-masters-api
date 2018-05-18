@@ -7,6 +7,10 @@ const skillSchema = new mongoose.Schema({
   },
   description: String,
   hours: String,
+  status: {
+    type: Number,
+    default: 1
+  },
   user: String,
   theme: String,
   goals: String

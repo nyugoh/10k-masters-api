@@ -17,7 +17,7 @@ router.post('/add', (req, res) =>{
       res.status(404).json({message: error.message});
     });
   } else {
-    res.status(404).json({message: "Invalid skill."});
+    res.status(404).json({message: 'Invalid skill'});
   }
 });
 
@@ -33,6 +33,23 @@ router.delete('/remove/:id', (req, res) =>{
   Skill.findByIdAndRemove(req.params.id).then(status=>{
     if (status)
       res.json({ status: 'OK', id: req.params.id });
+  }).catch(error=>{
+    res.status(404).json({ message: error.message });
+  });
+});
+
+router.post('/archive/:id', (req, res) =>{
+  Skill.findById(req.params.id).then(skill=>{
+    if (skill.status == 0)
+      skill.status = 1;
+    else if (skill.status == 1)
+      skill.status = 0;
+    skill.save().then( status => {
+      if(status)
+        res.json({ status: 'OK', skill });
+    }).catch( error => {
+      res.status(500).json({ message: error.message });
+    });
   }).catch(error=>{
     res.status(404).json({ message: error.message });
   });
